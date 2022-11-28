@@ -25,7 +25,7 @@ func main() {
 	//   - error logger ✔️
 	//   - auto reloading?
 	//   - database?
-	//   - git repo?
+	//   - git repo? ✔️
 
 	// Start server.
 	addr := ":4000"

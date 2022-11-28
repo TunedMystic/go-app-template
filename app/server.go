@@ -98,7 +98,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// There was no url match.
-	http.NotFound(w, r)
+	s.ErrNotFound(w)
 }
 
 // Handler prepares and returns the Server's main http.Handler.

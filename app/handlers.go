@@ -29,13 +29,13 @@ func (s *Server) HandleNotes() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		notes, err := s.notes.AllNotes()
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			s.ErrInternalServer(w, err)
 			return
 		}
 
 		data, err := json.Marshal(notes)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusUnprocessableEntity)
+			s.ErrInternalServer(w, err)
 			return
 		}
 
@@ -48,19 +48,19 @@ func (s *Server) HandleNote() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		noteID, err := strconv.Atoi(getUrlParam(r, 0))
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			s.ErrBadRequest(w, err)
+			return
 		}
 		s.infoLog.Printf("Getting note id=%d", noteID)
 
 		notes, err := s.notes.AllNotes()
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			s.ErrInternalServer(w, err)
 			return
 		}
 
 		if noteID >= len(notes) {
-			msg := fmt.Sprintf("note ID=%d not found", noteID)
-			http.Error(w, msg, http.StatusBadRequest)
+			s.ErrNotFound(w)
 			return
 		}
 
