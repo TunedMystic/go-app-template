@@ -11,6 +11,7 @@ import (
 // Server is the main application server.
 // .
 type Server struct {
+	debug    bool
 	infoLog  *log.Logger
 	errorLog *log.Logger
 	routes   map[string]Route
@@ -99,16 +100,4 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	// There was no url match.
 	s.ErrNotFound(w)
-}
-
-// Handler prepares and returns the Server's main http.Handler.
-// .
-func (s *Server) Handler() http.Handler {
-	s.Route("GET", "/", s.HandleHome())
-	s.Route("GET", "/health", s.HandleHealth())
-	s.Route("GET", "/about", s.HandleAbout())
-	s.Route("GET", "/notes", s.HandleNotes())
-	s.Route("GET", "/notes/([0-9]+)", s.HandleNote())
-
-	return s.Logger(s)
 }
